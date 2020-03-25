@@ -11,13 +11,13 @@ mod physics;
 use physics::*;
 
 pub struct App {
-    particles: [Particle; NUM_PARTICLES],
+    particles: Vec<Particle>,
 }
 
 impl App {
     fn new() -> App {
         let mut app = App {
-            particles: [Particle::new(0.0, 0.0); NUM_PARTICLES],
+            particles: vec![Particle::new(0.0, 0.0); NUM_PARTICLES],
         };
         let mut rng = rand::thread_rng();
         for i in 0..NUM_PARTICLES {
@@ -40,26 +40,44 @@ impl App {
     }
 
     fn update(&mut self, _args: &UpdateArgs) {
-        let particles_length = self.particles.len();
-        for j in 0..particles_length {
+        'outer: for j in 0..self.particles.len() {
             self.particles[j].accel = (0.0, 0.0);
-            for i in 0..particles_length {
+            for i in 0..self.particles.len() {
                 if j == i {
                     continue;
                 }
-                let a = self.particles[i].pos.1 - self.particles[j].pos.1;
-                let b = self.particles[i].pos.0 - self.particles[j].pos.0;
+                let a = self.particles[i].center.1 - self.particles[j].center.1;
+                let b = self.particles[i].center.0 - self.particles[j].center.0;
                 let radius_squared = (a).powi(2) + (b).powi(2);
-                let accel = 1.0 / radius_squared;
+                let force =
+                    (3.0 * self.particles[j].mass * self.particles[i].mass) / radius_squared;
                 let angle = a.atan2(b);
-                if radius_squared >= 2.0 {
+                if radius_squared
+                    >= ((self.particles[i].mass + self.particles[j].mass) / 2.0).powi(2)
+                {
                     self.particles[j].accel = (
-                        self.particles[j].accel.0 + (angle.cos() * accel),
-                        self.particles[j].accel.1 + (angle.sin() * accel),
+                        self.particles[j].accel.0
+                            + (angle.cos() * (force / self.particles[j].mass)),
+                        self.particles[j].accel.1
+                            + (angle.sin() * (force / self.particles[j].mass)),
                     );
+                } else if COLLISIONS {
+                    let total_mass = self.particles[i].mass + self.particles[j].mass;
+                    let total_momentum = (
+                        self.particles[i].vel.0 * self.particles[i].mass
+                            + self.particles[j].vel.0 * self.particles[j].mass,
+                        self.particles[i].vel.1 * self.particles[i].mass
+                            + self.particles[j].vel.1 * self.particles[j].mass,
+                    );
+                    self.particles[j].vel =
+                        (total_momentum.0 / total_mass, total_momentum.1 / total_mass);
+                    self.particles[j].mass = total_mass;
+                    self.particles.remove(i);
+                    break 'outer;
                 }
             }
         }
+
         for p in self.particles.iter_mut() {
             p.update();
         }
