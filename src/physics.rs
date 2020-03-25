@@ -4,6 +4,7 @@ use opengl_graphics::GlGraphics;
 pub const PARTICLE_SIZE: f64 = 1.0;
 pub const NUM_PARTICLES: usize = 200;
 pub const COLLISIONS: bool = true;
+pub const GRAVITATIONAL_CONSTANT: f64 = 3.0;
 
 #[derive(Clone, Copy)]
 pub struct Particle {

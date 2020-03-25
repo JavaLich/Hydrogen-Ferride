@@ -50,7 +50,8 @@ impl App {
                 let b = self.particles[i].center.0 - self.particles[j].center.0;
                 let radius_squared = (a).powi(2) + (b).powi(2);
                 let force =
-                    (3.0 * self.particles[j].mass * self.particles[i].mass) / radius_squared;
+                    (GRAVITATIONAL_CONSTANT * self.particles[j].mass * self.particles[i].mass)
+                        / radius_squared;
                 let angle = a.atan2(b);
                 if radius_squared
                     >= ((self.particles[i].mass + self.particles[j].mass) / 2.0).powi(2)
