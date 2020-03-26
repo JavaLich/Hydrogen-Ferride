@@ -72,6 +72,9 @@ impl App {
                     );
                     self.particles[j].vel =
                         (total_momentum.0 / total_mass, total_momentum.1 / total_mass);
+                    if self.particles[i].mass > self.particles[j].mass {
+                        self.particles[j].pos = self.particles[i].pos;
+                    }
                     self.particles[j].mass = total_mass;
                     self.particles.remove(i);
                     break 'outer;
