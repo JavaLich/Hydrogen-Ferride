@@ -6,9 +6,11 @@
 - Inelastic collisions that follow the law of conservation of momentum and make larger particles
 
 ## WIP
+- Simulate dark matter and dark energy in order to allow for the development of galaxies and clusters 
+- Camera Control using WASD
 - Configurable density
 - GUI/CLI interface in order to configure simulation constants (eg. number of particles, gravitational constant, size of particles)
-- This README
+- Change algorithm to Barnes-Hut Algorithm rather than brute force (Improves time complexity from O(N^2) to O(NlogN))
 
 ## How to Use
 - All constants are located in /src/physics.rs at the top

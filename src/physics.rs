@@ -1,7 +1,7 @@
 use graphics::*;
 use opengl_graphics::GlGraphics;
 
-pub const PARTICLE_SIZE: f64 = 1.0;
+pub const PARTICLE_SIZE: f64 = 3.0;
 pub const NUM_PARTICLES: usize = 200;
 pub const COLLISIONS: bool = true;
 pub const GRAVITATIONAL_CONSTANT: f64 = 3.0;
@@ -22,7 +22,7 @@ impl Particle {
             center: (x + (PARTICLE_SIZE / 2.0), y + (PARTICLE_SIZE / 2.0)),
             accel: (0.0, 0.0),
             vel: (0.0, 0.0),
-            mass: 1.0,
+            mass: PARTICLE_SIZE,
         }
     }
 

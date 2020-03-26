@@ -22,7 +22,7 @@ impl App {
         let mut rng = rand::thread_rng();
         for i in 0..NUM_PARTICLES {
             app.particles[i].pos = (rng.gen::<f64>() * 800.0, rng.gen::<f64>() * 800.0);
-            app.particles[i].vel = (rng.gen::<f64>() - 0.5, rng.gen::<f64>() - 0.5);
+            // app.particles[i].vel = (rng.gen::<f64>() - 0.5, rng.gen::<f64>() - 0.5);
         }
         app
     }
